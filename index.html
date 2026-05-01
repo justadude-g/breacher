@@ -1868,10 +1868,9 @@ const UNITS = [
     availableWeapons: {
       primary: ['Assault Rifle (Med)', 'Assault Rifle (Hvy)', 'SMG (Light)', 'SMG (Medium)', 'DMR (Med)', 'Shotgun (Buckshot)', 'Shotgun (Slug)', 'Bolt Action Sniper (Hvy)','Semi-Auto Sniper (Med)'],
       support: ['LMG (Med)', 'LMG PARA', 'Carbine w/ Underslung GL', 'Grenade Launcher'],
-      secondary: ['Revolver', 'Semi-Auto Pistol'],
       melee: ['Fists and Kicks', 'Stiletto Style', 'Chopper Style', 'Cutting Style', 'Blunt Style'],
     },
-    weaponRule: 'Each model may have 1 Melee weapon + 1 Primary weapon. Coordinated 3+ models: 1 model may take a support weapon for +1 FOP.',
+    weaponRule: 'Each model in the Unit may have 1 Melee weapon and 1 Primary weapon. Coordinated units of 3+ models may equip 1 model with a support weapon for +1 FOP.',
     upgrades: [
       { id:'cohesion', label:'Extended Cohesion (2" → 4")', cost: 1, perUnit: true, coordOnly: true },
     ],
@@ -1891,10 +1890,9 @@ const UNITS = [
     availableWeapons: {
       primary: ['Assault Rifle (Med)', 'Assault Rifle (Hvy)', 'SMG (Light)', 'SMG (Medium)', 'PDW (Light)', 'Compact SMG (Light)', 'Shotgun (Buckshot)', 'Shotgun (Slug)', 'Shotgun (Flechette)', 'Bolt Action Sniper (Hvy)', 'Semi-Auto Sniper (Med)', 'DMR (Med)'],
       support: ['LMG (Med)', 'LMG PARA', 'Anti-Material Rifle', 'Carbine w/ Underslung GL', 'Grenade Launcher'],
-      secondary: ['Revolver', 'Semi-Auto Pistol'],
       melee: ['Fists and Kicks', 'Stiletto Style', 'Chopper Style', 'Cutting Style', 'Blunt Style'],
     },
-    weaponRule: 'Each model: 1 Melee + 1 Primary. Per 2 models in Coordinated: 1 may take a Support weapon at +1 FOP.',
+    weaponRule: 'Each model in the Unit may have 1 Melee weapon and 1 Primary weapon. In Coordinated groups, for every 2 models, 1 model may be equipped with a Support weapon at +1 FOP.',
     upgrades: [
       { id:'armor2',    label:'+2 Armor',                  cost: 1, perModel: true,  coordOnly: true  },
       { id:'cohesion',  label:'Extended Cohesion (2" → 4")', cost: 1, perUnit: true,  coordOnly: true  },
