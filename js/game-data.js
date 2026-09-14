@@ -156,7 +156,7 @@ const OPFOR_UNITS = [
       { id:'cohesion', label:'Extended Cohesion (2"→4")', cost:1, perUnit:true,  coordOnly:true },
       { id:'support',  label:'Support Weapon (3+ models)', cost:1, perUnit:true,  coordOnly:true, minModels:3 },
     ],
-    rules: ['Coordinated units of 3+ models may equip 1 model with a support weapon for +1 FOP.'],
+    rules: [],
     notes: '',
   },
   {
@@ -174,7 +174,7 @@ const OPFOR_UNITS = [
       { id:'support',   label:'Support Weapon (1 per 2 models)', cost:1, perPair:true, coordOnly:true },
       { id:'concealed', label:'Concealed (individual)',   cost:2, perModel:true,  indOnly:true    },
     ],
-    rules: ['For every 2 models in a Coordinated group, 1 model may be equipped with a Support weapon at +1 FOP.'],
+    rules: [],
     notes: '',
   },
   {

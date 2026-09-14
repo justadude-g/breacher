@@ -638,13 +638,24 @@ function buildImageField(f) {
     bar.appendChild(mkSlider('artY', 'Pan Y', 0, 1, 0.01));
     bar.appendChild(mkSlider('artZoom', 'Zoom', 1, 2.5, 0.01));
 
+    const btnRow = document.createElement('div');
+    btnRow.className = 'art-btn-row';
+
+    const reset = document.createElement('button');
+    reset.type = 'button'; reset.className = 'mini-btn'; reset.textContent = 'Reset position';
+    reset.addEventListener('click', () => {
+      state.card.artX = 0.5; state.card.artY = 0.5; state.card.artZoom = 1;
+      renderThumb(); draw(); state.dirty = true;
+    });
+
     const rm = document.createElement('button');
     rm.type = 'button'; rm.className = 'mini-btn danger'; rm.textContent = 'Remove art';
     rm.addEventListener('click', () => {
       state.card.art = null; state.img = null; renderThumb(); touch();
     });
 
-    thumbWrap.append(im, bar, rm);
+    btnRow.append(reset, rm);
+    thumbWrap.append(im, bar, btnRow);
   }
 
   box.append(drop, input, thumbWrap);
