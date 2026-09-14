@@ -55,12 +55,17 @@ function buildForm() {
   form.innerHTML = '';
   $('#tpl-blurb').textContent = tpl.blurb;
 
-  const picker = buildLibraryField();
-  if (picker) {
-    const head = document.createElement('div');
-    head.className = 'form-group-head';
-    head.textContent = 'Fill from library';
-    form.append(head, picker);
+  if (state.template === 'opfor') {
+    /* OPFOR: FOP calculator (unit type quick-select + controls) replaces library search. */
+    form.append(buildFopCalc());
+  } else {
+    const picker = buildLibraryField();
+    if (picker) {
+      const head = document.createElement('div');
+      head.className = 'form-group-head';
+      head.textContent = 'Fill from library';
+      form.append(head, picker);
+    }
   }
 
   tpl.fields.forEach(f => {

@@ -268,8 +268,10 @@ function drawHeader(ctx, x, y, w, h, title, subtitle, badge, badgeLabel, accent,
   const pad     = opt.pad     || LAYOUT.PAD;
 
   vGradient(ctx, x, y, w, h, PALETTE.headerA, PALETTE.headerB);
-  ctx.fillStyle = accent;
-  ctx.fillRect(x, y + h - 4, w, 4);
+  if (!opt.noAccentBar) {
+    ctx.fillStyle = accent;
+    ctx.fillRect(x, y + h - 4, w, 4);
+  }
 
   const hasBadge = badge !== undefined && badge !== null && String(badge).trim() !== '';
   const badgeW = opt.badgeW || LAYOUT.BADGE_W;
@@ -419,7 +421,7 @@ function renderUnitCard(ctx, card, img, tpl) {
 
   drawHeader(ctx, inX, F, inW, LAYOUT.HEADER_H,
              card.name || '', card.subtitle || '',
-             card.badge, tpl.badgeLabel, tpl.accent);
+             card.badge, tpl.badgeLabel, tpl.accent, { noAccentBar: true });
 
   /* Budget: bands and rules are measured first; the portrait takes
      what is left, floored so the stat columns always fit. */
