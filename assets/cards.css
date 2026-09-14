@@ -166,6 +166,7 @@ header {
   background: var(--panel2); border: 1px solid var(--border); border-radius: 3px;
 }
 .art-controls { display: flex; flex-direction: column; gap: 6px; }
+.art-btn-row { display: flex; gap: 6px; }
 .slider { display: grid; grid-template-columns: 60px 1fr; align-items: center; gap: 8px; }
 .slider span {
   font-family: 'Oswald', sans-serif; font-size: 10px;
