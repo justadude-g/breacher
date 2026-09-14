@@ -626,14 +626,14 @@ function renderWeaponCard(ctx, card, img) {
     ctx.strokeStyle = '#1a1a1a'; ctx.lineWidth = 2; ctx.stroke();
     ctx.fillStyle = '#ffffff';
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText(card.damage, px + dw / 2, sy + 18);
+    ctx.fillText(card.damage, px + dw / 2, sy + 20);
     if (ce) {
       px += dw + gap;
       ctx.fillStyle = PALETTE.boneLight;
       roundRectPath(ctx, px, sy, cw, 36, 7); ctx.fill();
       ctx.strokeStyle = '#5c4a1c'; ctx.lineWidth = 2; ctx.stroke();
       ctx.fillStyle = '#4a3a10';
-      ctx.fillText(ce, px + cw / 2, sy + 18);
+      ctx.fillText(ce, px + cw / 2, sy + 20);
     }
   }
 
