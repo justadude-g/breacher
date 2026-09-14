@@ -165,12 +165,81 @@ function buildOpforLibrary() {
   });
 }
 
+/* Build the Breacher library: generic class archetypes + premade named
+   characters. Generic classes come first so they appear at the top. */
+function buildBreacherLibrary() {
+  const out = [];
+  BREACHER_CLASSES.forEach(c => {
+    out.push({
+      id:       'bc:' + c.id,
+      group:    'Generic Classes',
+      label:    c.name,
+      sublabel: '',
+      search:   c.name.toLowerCase(),
+      fields: {
+        name:     c.name,
+        badge:    c.badge,
+        subtitle: c.subtitle,
+        rc: c.stats.rc, mc: c.stats.mc, tech: c.stats.tech,
+        mor: c.stats.mor, wnd: c.stats.wnd,
+        mov: c.stats.mov, arm: c.stats.arm, mag: c.stats.mag,
+        grid: c.stats.grid, gren: c.stats.gren,
+        bands:  c.bands.map(b => ({ ...b })),
+        rules:  c.rules.slice(),
+        footer: c.footer,
+      },
+    });
+  });
+  BREACHER_PREMADES.forEach(p => {
+    out.push({
+      id:       'bp:' + p.id,
+      group:    'Premade Breachers',
+      label:    p.subtitle || p.name,
+      sublabel: p.badge ? 'CE ' + p.badge : '',
+      search:   (p.name + ' ' + p.subtitle).toLowerCase(),
+      fields: {
+        name:     p.name,
+        badge:    p.badge,
+        subtitle: p.subtitle,
+        rc: p.stats.rc, mc: p.stats.mc, tech: p.stats.tech,
+        mor: p.stats.mor, wnd: p.stats.wnd,
+        mov: p.stats.mov, arm: p.stats.arm, mag: p.stats.mag,
+        grid: p.stats.grid, gren: p.stats.gren,
+        bands:  p.bands.map(b => ({ ...b })),
+        rules:  p.rules.slice(),
+        footer: p.footer,
+      },
+    });
+  });
+  return out;
+}
+
+/* Build the Reference card library from premade Breachers only.
+   Selecting a character pre-fills name, subtitle and abilities. */
+function buildReferenceLibrary() {
+  return BREACHER_PREMADES.map(p => ({
+    id:       'ref:' + p.id,
+    group:    'Premade Breachers',
+    label:    p.subtitle || p.name,
+    sublabel: '',
+    search:   (p.name + ' ' + p.subtitle).toLowerCase(),
+    fields: {
+      name:      p.subtitle || p.name,
+      subtitle:  '',
+      abilities: p.abilities ? p.abilities.slice() : [],
+      footer:    p.footer || '',
+    },
+  }));
+}
+
 /* One registry keyed by template id; a template without an entry
    simply gets no library controls. */
 const LIBRARIES = {
-  weapon: { title: 'Weapon Library', build: buildWeaponLibrary, cache: null },
-  gear:   { title: 'Gear Library',   build: buildGearLibrary,   cache: null },
-  opfor:  { title: 'OPFOR Library',  build: buildOpforLibrary,  cache: null },
+  weapon:    { title: 'Weapon Library',    build: buildWeaponLibrary,    cache: null },
+  gear:      { title: 'Gear Library',      build: buildGearLibrary,      cache: null },
+  opfor:     { title: 'OPFOR Library',     build: buildOpforLibrary,     cache: null },
+  breacher:  { title: 'Breacher Library',  build: buildBreacherLibrary,  cache: null },
+  reference: { title: 'Reference Library', build: buildReferenceLibrary, cache: null },
 };
 
 function getLibrary(templateId) {

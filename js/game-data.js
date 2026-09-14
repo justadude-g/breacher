@@ -194,3 +194,230 @@ const OPFOR_UNITS = [
     notes: 'Always Individual.',
   },
 ];
+
+/* ============================================================
+   BREACHER_CLASSES — generic class archetypes for the card
+   designer's "Fill from library" picker. Stats represent a
+   standard build for each role; the user edits from there.
+   ============================================================ */
+const BREACHER_CLASSES = [
+  {
+    id: 'class-assault',
+    name: 'ASSAULT',
+    subtitle: '',
+    badge: '11',
+    stats: { rc:'14', mc:'12', tech:'12', mor:'11', wnd:'20', mov:'4"', arm:'3', mag:'4', grid:'4', gren:'2' },
+    bands: [
+      { text:'PRIMARY WEAPON: Short or Medium Range', span:'full', tone:'dark' },
+      { text:'SECONDARY WEAPON', span:'half', tone:'dark' },
+      { text:'MELEE WEAPON', span:'half', tone:'dark' },
+    ],
+    rules: [
+      'Once per turn, a (SAx) gets +1 shot max.',
+      'If Stacked Mag kills a Unit, gain +2 MP.',
+      'No Low Ammo from Stacked Mags.',
+    ],
+    footer: '',
+  },
+  {
+    id: 'class-marksman',
+    name: 'MARKSMAN',
+    subtitle: '',
+    badge: '',
+    stats: { rc:'16', mc:'10', tech:'11', mor:'12', wnd:'20', mov:'6"', arm:'2', mag:'3', grid:'3', gren:'1' },
+    bands: [
+      { text:'PRIMARY WEAPON: Long Range', span:'full', tone:'dark' },
+      { text:'SECONDARY WEAPON', span:'half', tone:'dark' },
+      { text:'MELEE WEAPON', span:'half', tone:'dark' },
+    ],
+    rules: [],
+    footer: '',
+  },
+  {
+    id: 'class-heavy-assault',
+    name: 'HEAVY ASSAULT',
+    subtitle: '',
+    badge: '',
+    stats: { rc:'14', mc:'11', tech:'12', mor:'12', wnd:'20', mov:'5"', arm:'2', mag:'5', grid:'3', gren:'1' },
+    bands: [
+      { text:'PRIMARY WEAPON: Support', span:'full', tone:'dark' },
+      { text:'SECONDARY WEAPON', span:'half', tone:'dark' },
+      { text:'MELEE WEAPON', span:'half', tone:'dark' },
+    ],
+    rules: [],
+    footer: '',
+  },
+  {
+    id: 'class-covert',
+    name: 'COVERT',
+    subtitle: '',
+    badge: '',
+    stats: { rc:'13', mc:'13', tech:'13', mor:'9', wnd:'20', mov:'6"', arm:'2', mag:'3', grid:'3', gren:'1' },
+    bands: [
+      { text:'PRIMARY WEAPON: Short Range', span:'full', tone:'dark' },
+      { text:'SECONDARY WEAPON', span:'half', tone:'dark' },
+      { text:'MELEE WEAPON', span:'half', tone:'dark' },
+    ],
+    rules: [
+      'May begin the Operation in Concealment.',
+      'Concealment tokens may move up to 5".',
+    ],
+    footer: '',
+  },
+  {
+    id: 'class-hand-to-hand',
+    name: 'HAND TO HAND',
+    subtitle: '',
+    badge: '',
+    stats: { rc:'10', mc:'15', tech:'13', mor:'10', wnd:'20', mov:'6"', arm:'2', mag:'2', grid:'2', gren:'1' },
+    bands: [
+      { text:'PRIMARY WEAPON: Short Range', span:'full', tone:'dark' },
+      { text:'SECONDARY WEAPON', span:'half', tone:'dark' },
+      { text:'MELEE WEAPON', span:'half', tone:'dark' },
+    ],
+    rules: [],
+    footer: '',
+  },
+];
+
+/* ============================================================
+   BREACHER_PREMADES — named characters from the rulebook.
+   abilities = full text for the paired Reference card.
+   ============================================================ */
+const BREACHER_PREMADES = [
+  {
+    id: 'mutt',
+    name: 'ASSAULT',
+    subtitle: 'MUTT (ASSAULT)',
+    badge: '11',
+    stats: { rc:'14', mc:'12', tech:'12', mor:'11', wnd:'20', mov:'5"', arm:'2', mag:'4', grid:'5', gren:'2' },
+    bands: [
+      { text:'Assault Rifle (Medium Rounds)', span:'full', tone:'dark' },
+      { text:'Revolver', span:'half', tone:'dark' },
+      { text:'Blunt Style', span:'half', tone:'dark' },
+    ],
+    rules: [
+      '(SAX) Ranged Combat Maneuvers have a max of +1 shots.',
+      'Stacked Mag OoA: gain +2 MP; no Low Ammo token.',
+    ],
+    footer: '',
+    abilities: [
+      '1. Once per turn, a (SAX) Ranged Combat Maneuver this Breacher makes has a max of +1 shots.',
+      '2. When this Breacher takes an enemy unit Out of Action using the Stacked Mag Momentum Ability, gain 2 Momentum points. In addition, Stacked Mags does not give this Breacher a Low Ammo token.',
+      '**Fire Superiority (cost 1 Momentum or Grit):** Add a Low Ammo token to this Unit and then the next (A) Ranged attack this Unit makes this activation gains +1D4 damage.',
+      '**Courage Under Fire (cost 1 Momentum or Grit):** This Unit takes 2 damage (ignoring armor) and removes an instance of Shaken. The Unit\'s next attack this activation is +1 damage for each of its Low Ammo tokens.',
+    ],
+  },
+  {
+    id: 'oasis-1',
+    name: 'MARKSMAN',
+    subtitle: 'OASIS-1 (MARKSMAN)',
+    badge: '',
+    stats: { rc:'16', mc:'10', tech:'11', mor:'12', wnd:'20', mov:'6"', arm:'2', mag:'3', grid:'3', gren:'1' },
+    bands: [
+      { text:'Semi-Auto Sniper Rifle', span:'full', tone:'dark' },
+      { text:'Semi-Auto Pistol', span:'half', tone:'dark' },
+      { text:'Cutting Style', span:'half', tone:'dark' },
+    ],
+    rules: [
+      '1 free Aim Maneuver per turn as part of a Movement Maneuver.',
+      'Full-health OoA: gain 1 Momentum.',
+    ],
+    footer: '',
+    abilities: [
+      '1. This Breacher may take 1 free Aim Maneuver each turn as part of a Movement Maneuver.',
+      '2. When this Breacher takes an enemy Unit Out of Action that started the activation at full health, gain 1 Momentum point.',
+      '**Advanced Deception (cost 1 Momentum and/or Grit):** Before placing Breachers in Breach Points at the start of the Operation, choose a Breach Point and move it up to 4".',
+      '**Collateral (cost 1 Momentum or Grit):** After hitting with a Ranged attack, choose 1 additional target up to 4" behind and outside the original target\'s front 180° Line of Sight and within Line of Sight of the Breacher. This Unit is also hit by the attack. Roll damage separately for each target.',
+    ],
+  },
+  {
+    id: 'kraken',
+    name: 'HEAVY ASSAULT',
+    subtitle: 'KRAKEN (HEAVY ASSAULT)',
+    badge: '',
+    stats: { rc:'14', mc:'11', tech:'12', mor:'12', wnd:'20', mov:'5"', arm:'2', mag:'5', grid:'3', gren:'1' },
+    bands: [
+      { text:'Light Machine Gun (PARA)', span:'full', tone:'dark' },
+      { text:'Revolver', span:'half', tone:'dark' },
+      { text:'Blunt Style', span:'half', tone:'dark' },
+    ],
+    rules: [
+      'Reduce Low Ammo tokens received by 1 (min. 1).',
+      'Full Auto OoA: gain 1 Momentum.',
+    ],
+    footer: '',
+    abilities: [
+      '1. This Breacher reduces the number of Low Ammo tokens they receive from Combat Maneuvers by 1 to a minimum of 1.',
+      '2. When this Breacher takes an enemy Unit Out of Action using the Full Auto Combat Maneuver, gain 1 Momentum.',
+      '**Dominate The A.O. (cost 1 Momentum or Grit):** If the Unit is within 2" of an objective or Breach Point, the next attack this Unit makes this activation gains the bonuses of (AP) and (DEV).',
+    ],
+  },
+  {
+    id: 'broker',
+    name: 'COVERT',
+    subtitle: 'BROKER (COVERT)',
+    badge: '',
+    stats: { rc:'13', mc:'13', tech:'13', mor:'9', wnd:'20', mov:'6"', arm:'2', mag:'3', grid:'3', gren:'1' },
+    bands: [
+      { text:'SMG (Light Rounds)', span:'full', tone:'dark' },
+      { text:'Semi-Auto Pistol', span:'half', tone:'dark' },
+      { text:'Stiletto Style', span:'half', tone:'dark' },
+    ],
+    rules: [
+      'May begin the Operation in Concealment. Tokens move up to 5".',
+      'Concealment OoA: gain 1 Momentum.',
+    ],
+    footer: '',
+    abilities: [
+      '1. This Breacher may begin the Operation in Concealment. Covert Concealment tokens may move up to 5".',
+      '2. When an enemy Unit is taken Out of Action by an attack from this Breacher\'s Concealment tokens, gain 1 Momentum point.',
+      '**Blend In (cost 1 Momentum and/or Grit):** Makes this activation count as Flanking. In addition, for each Civilian within 2" of this Unit, all attacks this Unit makes this Maneuver add +2 damage.',
+    ],
+  },
+  {
+    id: 'akimitsu',
+    name: 'HAND TO HAND',
+    subtitle: 'AKIMITSU (HAND TO HAND)',
+    badge: '',
+    stats: { rc:'10', mc:'15', tech:'13', mor:'10', wnd:'20', mov:'6"', arm:'2', mag:'2', grid:'2', gren:'1' },
+    bands: [
+      { text:'Compact SMG', span:'full', tone:'dark' },
+      { text:'Revolver', span:'half', tone:'dark' },
+      { text:'Melee Chopper', span:'half', tone:'dark' },
+    ],
+    rules: [
+      '1 free Heavy Blow Maneuver per turn as part of another Combat Maneuver.',
+      'Heavy Blow OoA: gain 1 Momentum.',
+    ],
+    footer: '',
+    abilities: [
+      '1. This Breacher may make 1 free Heavy Blow Maneuver each turn as part of another Combat Maneuver.',
+      '2. When this Breacher takes an enemy Unit Out of Action with the Heavy Blow Combat Maneuver, gain 1 Momentum point.',
+      '**Shukuchi (cost 1 Momentum or Grit):** For the rest of this activation, this Unit counts all of its Melee Combat skill attacks as Flanking.',
+      '**Roll With It (cost 1 Momentum or Grit):** In response to an attack that targets this Unit, the targeted Unit counts its armor as 2 higher. May only be used once per attack that targets this Unit.',
+    ],
+  },
+  {
+    id: 'spall',
+    name: 'COVERT',
+    subtitle: 'SPALL (COVERT)',
+    badge: '',
+    stats: { rc:'13', mc:'13', tech:'13', mor:'9', wnd:'20', mov:'5"', arm:'2', mag:'4', grid:'5', gren:'2' },
+    bands: [
+      { text:'Assault Rifle (Heavy Rounds)', span:'full', tone:'dark' },
+      { text:'Semi-Auto Pistol', span:'half', tone:'dark' },
+      { text:'Cutting Style', span:'half', tone:'dark' },
+    ],
+    rules: [
+      'May begin the Operation in Concealment. Tokens move up to 5".',
+      'Concealment OoA: gain 1 Momentum.',
+    ],
+    footer: '',
+    abilities: [
+      '1. This Breacher may begin the Operation in Concealment. Covert Concealment tokens may move up to 5".',
+      '2. When an enemy Unit is taken Out of Action by an attack from this Breacher\'s Concealment tokens, gain 1 Momentum point.',
+      '**At The Ready (cost 1 Momentum and/or Grit):** This Unit gains a free Aim Maneuver before making a Combat Maneuver.',
+    ],
+  },
+];
