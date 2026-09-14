@@ -353,21 +353,53 @@ function buildFopCalc() {
 function applyFopCalc() {
   const result = calcFop();
   if (!result) return;
-  state.card.badge = String(result.fop);
-  /* Sync formation line to card field. */
-  const u = result.unit;
-  const isCoord = result.isCoord;
-  const models = result.models;
+
+  const { fop, models, unit: u, isCoord } = result;
+  const upgrades = state.card._fop_upgrades || {};
+
+  state.card.badge = String(fop);
+  state.card.formation = isCoord
+    ? 'Coordinated: [' + models + '/' + u.modelsMax + ']'
+    : 'Individual';
+
+  /* Recompute arm stat */
+  let armVal = parseInt(u.stats.arm, 10) || 0;
+  if (upgrades['armor2'] && isCoord) armVal += 2;
+  if (upgrades['armor3'])            armVal  = 3;
+  state.card.arm = String(armVal);
+
+  /* Rebuild rules array from calculator state */
+  const newRules = [];
+  newRules.push(u.fopPerModel + ' FOP Per Model');
   if (isCoord) {
-    state.card.formation = 'Coordinated: [' + models + '/' + u.modelsMax + ']';
-  } else {
-    state.card.formation = 'Individual';
+    newRules.push('Cohesion: ' + (upgrades['cohesion'] ? '4"' : '2"'));
   }
-  /* Update the badge input if it's rendered. */
+  if (upgrades['support'] && isCoord) {
+    const sup = u.upgrades.find(up => up.id === 'support');
+    if (sup && sup.perPair) {
+      const pairs = Math.floor(models / 2);
+      if (pairs > 0)
+        newRules.push(pairs + ' model' + (pairs !== 1 ? 's' : '') + ' equipped with Support weapon');
+    } else {
+      newRules.push('1 model equipped with Support weapon');
+    }
+  }
+  if (upgrades['concealed'] && !isCoord) {
+    newRules.push('Concealed');
+  }
+  u.rules.forEach(r => newRules.push(r));
+  state.card.rules = newRules;
+
+  /* Sync DOM inputs */
   const badgeEl = document.getElementById('f_badge');
   if (badgeEl) badgeEl.value = state.card.badge;
   const formEl = document.getElementById('f_formation');
   if (formEl) formEl.value = state.card.formation;
+  const rulesEl = document.getElementById('f_rules');
+  if (rulesEl) rulesEl.value = state.card.rules.join('\n');
+  const armEl = document.getElementById('f_arm');
+  if (armEl) armEl.value = state.card.arm;
+
   touch();
 }
 
