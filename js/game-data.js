@@ -62,7 +62,7 @@ const GRENADES = [
    Effectiveness modifier; 0 means the table shows "-".
    `icon` maps to a slug in ICON_SET (card-icons.js).
    ──────────────────────────────────────────────────────────*/
-const TACTICAL_GEAR = [
+const CARD_GEAR = [
   { id:'suppressor', name:'Suppressor', slots:1, ce:0, icon:'ranged',
     effect:'The first **(PS)** shot of each Combat Maneuver is at an additional **+2 to hit**. In addition, Units targeted with this weapon may not spend Momentum Points to turn and face this Unit.' },
   { id:'coms', name:'Coms', slots:1, ce:0, icon:'command',

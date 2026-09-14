@@ -102,9 +102,9 @@ function buildWeaponLibrary() {
   return out;
 }
 
-/* Build the gear library from TACTICAL_GEAR. */
+/* Build the gear library from CARD_GEAR. */
 function buildGearLibrary() {
-  return TACTICAL_GEAR.map(g => ({
+  return CARD_GEAR.map(g => ({
     id: 'tg:' + g.id,
     group: g.slots === 0 ? 'Loadout' : g.slots + ' Slot' + (g.slots > 1 ? 's' : ''),
     label: g.name,
