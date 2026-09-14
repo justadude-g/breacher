@@ -38,6 +38,12 @@ async function loadArt(dataUrl) {
 }
 
 function setCard(card) {
+  /* Migration: 'Individual' formation was written by old code for hired-gun
+     units; clear it so legacy saved cards don't render the stale text. */
+  if (card.formation === 'Individual' &&
+      (card._fop_unitId === 'hired-gun' || card.template === 'hired-gun')) {
+    card.formation = '';
+  }
   state.card = card;
   state.template = card.template;
   $$('.tpl-btn').forEach(b => b.classList.toggle('active', b.dataset.tpl === card.template));
@@ -58,6 +64,13 @@ function buildForm() {
   if (state.template === 'opfor') {
     /* OPFOR: FOP calculator (unit type quick-select + controls) replaces library search. */
     form.append(buildFopCalc());
+    /* Hired Gun reminder — shown once unit is selected, above the editable fields. */
+    if (state.card._fop_unitId === 'hired-gun') {
+      const note = document.createElement('p');
+      note.className = 'fop-hg-reminder';
+      note.textContent = 'Max 1 Hired Gun per Breacher in the Operation. Always Individual.';
+      form.append(note);
+    }
   } else {
     const picker = buildLibraryField();
     if (picker) {
@@ -313,7 +326,7 @@ function buildFopCalc() {
         if (premade) {
           const fopRow = document.createElement('div');
           fopRow.className = 'fop-row fop-total';
-          fopRow.innerHTML = `<strong>FOP: ${premade.fopPerModel}</strong> <span>(Individual — ${premade.name})</span>`;
+          fopRow.innerHTML = `<strong>FOP: ${premade.fopPerModel}</strong> <span>(${premade.name})</span>`;
           box.appendChild(fopRow);
         }
         return;
@@ -392,7 +405,12 @@ function buildFopCalc() {
         cb.addEventListener('change', () => {
           if (!state.card._fop_upgrades) state.card._fop_upgrades = {};
           state.card._fop_upgrades[up.id] = cb.checked;
-          applyFopCalc(); refresh();
+          applyFopCalc();
+          if (up.id === 'support' && state.card._fop_unitId === 'hired-gun') {
+            buildForm();
+          } else {
+            refresh();
+          }
         });
         upRow.appendChild(lbl);
       });
@@ -423,7 +441,7 @@ function applyFopCalc() {
   state.card.badge = String(fop);
   state.card.formation = isCoord
     ? 'Coordinated: [' + models + '/' + u.modelsMax + ']'
-    : 'Individual';
+    : (u.id === 'hired-gun' ? '' : 'Individual');
 
   /* Recompute arm stat */
   let armVal = parseInt(u.stats.arm, 10) || 0;
@@ -433,7 +451,8 @@ function applyFopCalc() {
 
   /* Rebuild rules array from calculator state */
   const newRules = [];
-  newRules.push(u.fopPerModel + ' FOP Per Model');
+  /* FOP per model (skip for Hired Gun — FOP shown in badge) */
+  if (u.id !== 'hired-gun') newRules.push(u.fopPerModel + ' FOP Per Model');
   if (isCoord) {
     newRules.push('Cohesion: ' + (upgrades['cohesion'] ? '4"' : '2"'));
   }
@@ -450,8 +469,19 @@ function applyFopCalc() {
   if (upgrades['concealed'] && !isCoord) {
     newRules.push('Concealed');
   }
+  /* Hired Gun: show support weapon upgrade as card text unless the swap is active */
+  if (u.id === 'hired-gun' && !upgrades['support']) {
+    newRules.push('Upgrade: Primary → Support Weapon +1 FOP.');
+  }
   u.rules.forEach(r => newRules.push(r));
   state.card.rules = newRules;
+
+  /* Band[0] label (Hired Gun only): support upgrade swaps the primary slot */
+  if (u.id === 'hired-gun' && state.card.bands && state.card.bands[0]) {
+    state.card.bands[0].text = upgrades['support']
+      ? 'SUPPORT WEAPON'
+      : 'PRIMARY WEAPON (or Support)';
+  }
 
   /* Sync DOM inputs */
   const badgeEl = document.getElementById('f_badge');
@@ -485,7 +515,7 @@ function applyFopHGPremade() {
   state.card.mov       = p.stats.mov;
   state.card.wnd       = p.stats.wnd;
   state.card.tech      = p.stats.tech;
-  state.card.rules     = [p.fopPerModel + ' FOP Per Model', ...p.rules];
+  state.card.rules     = [...p.rules];
   if (p.bands) state.card.bands = p.bands.map(b => ({ ...b }));
   touch();
 }
@@ -822,9 +852,9 @@ function buildImageField(f) {
       w.appendChild(s);
       return w;
     };
-    bar.appendChild(mkSlider('artX', 'Pan X', 0, 1, 0.01));
+    bar.appendChild(mkSlider('artZoom', 'Zoom', 0.3, 2.5, 0.01));
     bar.appendChild(mkSlider('artY', 'Pan Y', 0, 1, 0.01));
-    bar.appendChild(mkSlider('artZoom', 'Zoom', 1, 2.5, 0.01));
+    bar.appendChild(mkSlider('artX', 'Pan X', 0, 1, 0.01));
 
     const btnRow = document.createElement('div');
     btnRow.className = 'art-btn-row';

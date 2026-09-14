@@ -458,6 +458,16 @@ header {
 }
 .fop-total strong { font-family: 'Oswald', sans-serif; font-size: 16px; color: var(--red); }
 .fop-total span   { font-size: 12px; color: var(--text-faint); }
+.fop-hg-reminder {
+  margin: 6px 0 4px;
+  padding: 7px 10px;
+  background: var(--panel2);
+  border-left: 3px solid var(--red);
+  border-radius: 3px;
+  font-size: 12px;
+  color: var(--text-faint);
+  line-height: 1.4;
+}
 .fop-hg-select {
   background: var(--panel2); color: var(--text);
   border: 1.5px solid var(--border); border-radius: 4px;

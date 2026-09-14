@@ -651,9 +651,9 @@ function renderWeaponCard(ctx, card, img) {
       ctx.textBaseline = 'middle';
       ctx.fillStyle = '#15181c';
       ctx.textAlign = 'center';
-      fitLine(ctx, label, inW * 0.48 - 10, 400, LAYOUT.FS_MINI_ROW, 14, FONTS.body);
+      fitLine(ctx, label, inW * 0.48 - 10, 400, LAYOUT.FS_MINI_BODY, 14, FONTS.body);
       ctx.fillText(label, inX + inW * 0.24, ry + M.ROW_H / 2 + 1);
-      fitLine(ctx, String(value), inW * 0.52 - 10, 600, LAYOUT.FS_MINI_ROW + 2, 14, FONTS.display);
+      fitLine(ctx, String(value), inW * 0.52 - 10, 700, LAYOUT.FS_MINI_BODY, 14, FONTS.display);
       ctx.fillText(String(value), split + (inW * 0.52) / 2, ry + M.ROW_H / 2 + 1);
       ry += M.ROW_H;
     });

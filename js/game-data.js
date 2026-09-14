@@ -187,11 +187,12 @@ const OPFOR_UNITS = [
     modelsDefault: 1,
     modelsMin: 1, modelsMax: 1,
     upgrades: [
-      { id:'armor3',    label:'+1 Armor (→3)',  cost:2, perUnit:true },
-      { id:'concealed', label:'Concealed',       cost:2, perUnit:true },
+      { id:'armor3',    label:'+1 Armor (→3)',           cost:2, perUnit:true },
+      { id:'concealed', label:'Concealed',                cost:2, perUnit:true },
+      { id:'support',   label:'Primary → Support Weapon', cost:1, perUnit:true },
     ],
-    rules: ['Maximum 1 Hired Gun per Breacher in the Operation. Always Individual.'],
-    notes: 'Always Individual.',
+    rules: [],
+    notes: '',
   },
 ];
 
@@ -468,7 +469,7 @@ const HIRED_GUN_PREMADES = [
       { text:'Chopper Style',          span:'half', tone:'dark' },
       { text:'Fists and Kicks',        span:'half', tone:'dark' },
     ],
-    formation: 'Individual · Concealed',
+    formation: 'Concealed',
     rules: [
       'Street Thugs in the same OPFOR have 4" cohesion.',
       'Counts as having Akimbo Tactical Gear.',
@@ -487,7 +488,7 @@ const HIRED_GUN_PREMADES = [
       { text:'Blunt Style',            span:'half', tone:'dark' },
       { text:'Stiletto Style',         span:'half', tone:'dark' },
     ],
-    formation: 'Individual · Concealed',
+    formation: 'Concealed',
     rules: [
       'Trained Units in the same OPFOR gain +1 Ranged Combat.',
     ],

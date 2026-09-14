@@ -235,10 +235,8 @@ function buildHiredGunLibrary() {
         { text:'MELEE WEAPON',                span:'half', tone:'dark' },
         { text:'MELEE WEAPON 2',              span:'half', tone:'dark' },
       ],
-      formation: 'Individual',
+      formation: '',
       rules: [
-        '6 FOP. Max 1 per Breacher in the Operation.',
-        'Always Individual.',
         'Upgrade: +1 Armor (→3) +2 FOP.',
         'Upgrade: Concealed +2 FOP.',
         'Upgrade: Coordinated +1 FOP/model [2/4] 2" cohesion.',
