@@ -1334,7 +1334,12 @@
   }
 
   .spec-card:hover { border-left-color: var(--red); background: #dddde0; }
-  .spec-card.selected { border-left-color: var(--red-bright); background: #1e1518; }
+  .spec-card.selected { border-left-color: var(--red-bright); background: #1e1518; color: #e8e6e0; }
+  .spec-card.selected .spec-card-name { color: #fff; }
+  .spec-card.selected .spec-card-ce { color: #d4a017; }
+  .spec-card.selected .spec-card-desc { color: #a09e98; }
+  .spec-card.selected .stat-pill { color: #a09e98; }
+  .spec-card.selected .stat-pill-val { color: #e8e6e0; }
 
   .spec-card-name {
     font-family: 'Oswald', sans-serif;

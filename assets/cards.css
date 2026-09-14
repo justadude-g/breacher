@@ -323,10 +323,12 @@ header {
   font-family: 'Oswald', sans-serif; font-size: 9px; letter-spacing: 1.5px;
   text-transform: uppercase; padding: 2px 6px; border-radius: 2px; color: #fff;
 }
-.tag-breacher { background: #1a6fad; }
-.tag-opfor    { background: #6d7a26; }
-.tag-weapon   { background: #6c3336; }
-.tag-gear     { background: #5a6b52; }
+.tag-breacher  { background: #1a6fad; }
+.tag-opfor     { background: #6d7a26; }
+.tag-reference { background: #555; }
+.tag-hired-gun { background: #8b3a62; }
+.tag-weapon    { background: #6c3336; }
+.tag-gear      { background: #5a6b52; }
 .lib-acts { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; max-width: 150px; }
 .empty { color: var(--text-faint); font-size: 13px; padding: 12px 0; }
 

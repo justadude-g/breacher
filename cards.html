@@ -15,6 +15,7 @@
     <a class="btn ghost" href="index.html">&larr; Force Builder</a>
     <button class="btn" id="btn-new">New</button>
     <button class="btn primary" id="btn-save">Save</button>
+    <button class="btn" id="btn-my-cards">My Cards</button>
     <button class="btn" id="btn-png">Export PNG</button>
     <button class="btn" id="btn-sheet">Print Sheet</button>
     <button class="btn ghost" id="theme-toggle" title="Switch theme">🌙</button>
@@ -32,40 +33,17 @@
         <button class="tpl-btn active" data-tpl="breacher">Breacher</button>
         <button class="tpl-btn" data-tpl="reference">Reference</button>
         <button class="tpl-btn" data-tpl="opfor">OPFOR</button>
+        <button class="tpl-btn" data-tpl="hired-gun">Hired Gun</button>
         <button class="tpl-btn" data-tpl="weapon">Weapon</button>
         <button class="tpl-btn" data-tpl="gear">Gear</button>
       </div>
       <p id="tpl-blurb"></p>
-      <p class="locked-note">Templates are locked to these five categories — layout, colour and type are fixed so every printed card in a deck matches.</p>
+      <p class="locked-note">Templates are locked to these categories — layout, colour and type are fixed so every printed card in a deck matches.</p>
     </section>
 
     <section class="panel">
       <h2>Card Details</h2>
       <div id="form"></div>
-    </section>
-
-    <section class="panel">
-      <h2>
-        <span>Saved Cards</span>
-        <span style="display:flex;gap:6px;align-items:center;">
-          <select id="lib-filter" style="background:var(--panel2);color:var(--text);border:1px solid var(--border);border-radius:3px;padding:4px 6px;font-family:inherit;font-size:12px;">
-            <option value="all">All types</option>
-            <option value="breacher">Breacher</option>
-            <option value="opfor">OPFOR</option>
-            <option value="reference">Reference</option>
-            <option value="weapon">Weapon</option>
-            <option value="gear">Gear</option>
-          </select>
-        </span>
-      </h2>
-      <div id="library"></div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;">
-        <button class="mini-btn" id="btn-export">Export backup</button>
-        <button class="mini-btn" id="btn-import">Import backup</button>
-        <input type="file" id="import-input" accept="application/json" hidden>
-        <button class="mini-btn" id="btn-trash">Recently deleted</button>
-        <button class="mini-btn" id="btn-clear-sheet">Clear sheet queue (<span id="sheet-count">0</span>)</button>
-      </div>
     </section>
 
   </div>
@@ -122,6 +100,35 @@
       <button class="btn" id="btn-trash-close">Close</button>
     </div>
     <div id="trash-list"></div>
+  </div>
+</div>
+
+<!-- ── My Cards overlay ───────────────────────────────── -->
+<div class="overlay" id="my-cards-view">
+  <div class="overlay-inner">
+    <div class="overlay-head">
+      <h2>My Cards</h2>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <select id="lib-filter" style="background:var(--panel2);color:var(--text);border:1px solid var(--border);border-radius:3px;padding:6px 8px;font-family:inherit;font-size:13px;">
+          <option value="all">All types</option>
+          <option value="breacher">Breacher</option>
+          <option value="hired-gun">Hired Gun</option>
+          <option value="opfor">OPFOR</option>
+          <option value="reference">Reference</option>
+          <option value="weapon">Weapon</option>
+          <option value="gear">Gear</option>
+        </select>
+        <button class="btn" id="btn-my-cards-close">Close</button>
+      </div>
+    </div>
+    <div id="library"></div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:16px;padding-top:12px;border-top:1px solid var(--border);">
+      <button class="mini-btn" id="btn-export">Export backup</button>
+      <button class="mini-btn" id="btn-import">Import backup</button>
+      <input type="file" id="import-input" accept="application/json" hidden>
+      <button class="mini-btn" id="btn-trash">Recently deleted</button>
+      <button class="mini-btn" id="btn-clear-sheet">Clear sheet queue (<span id="sheet-count">0</span>)</button>
+    </div>
   </div>
 </div>
 

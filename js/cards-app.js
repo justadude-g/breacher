@@ -934,6 +934,7 @@ function escapeHtml(s) {
 async function openCard(id) {
   const c = await getCard(id);
   if (c) setCard(c);
+  $('#my-cards-view').classList.remove('open');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -1031,6 +1032,11 @@ async function boot() {
     setCard(blankCard(state.template));
   });
   $('#btn-save').addEventListener('click', doSave);
+  $('#btn-my-cards').addEventListener('click', () => {
+    refreshLibrary();
+    $('#my-cards-view').classList.add('open');
+  });
+  $('#btn-my-cards-close').addEventListener('click', () => $('#my-cards-view').classList.remove('open'));
   $('#btn-png').addEventListener('click', doExportPNG);
   $('#btn-sheet').addEventListener('click', buildPrintSheet);
   $('#btn-sheet-close').addEventListener('click', () => $('#sheet-view').classList.remove('open'));
