@@ -316,4 +316,4 @@ const TEMPLATES = {
 
 };
 
-const TEMPLATE_ORDER = ['breacher','reference','opfor','hired-gun','weapon','gear'];
+const TEMPLATE_ORDER = ['breacher','reference','opfor','weapon','gear'];

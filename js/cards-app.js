@@ -237,6 +237,7 @@ function buildFopCalc() {
         state.card._fop_upgrades = {};
         /* If switching unit type, also prefill card stats from library. */
         if (oldId !== u.id) {
+          if (u.id === 'hired-gun') { state.card._fop_hgMode = 'generic'; state.card._fop_hgPremadeId = null; }
           const lib = getLibrary('opfor');
           const entry = lib && lib.find(it => it.meta && it.meta.unitId === u.id);
           if (entry) {
@@ -256,6 +257,68 @@ function buildFopCalc() {
     const curUnit = (typeof OPFOR_UNITS !== 'undefined') &&
                     OPFOR_UNITS.find(u => u.id === state.card._fop_unitId);
     if (!curUnit) return;
+
+    /* --- Hired Gun: Generic / Premade selector --- */
+    if (state.card._fop_unitId === 'hired-gun') {
+      const hgMode = state.card._fop_hgMode || 'generic';
+      const hgModeRow = document.createElement('div');
+      hgModeRow.className = 'fop-row';
+      const modeLabel = document.createElement('label');
+      modeLabel.textContent = 'Type:';
+      hgModeRow.appendChild(modeLabel);
+      const modeSelect = document.createElement('select');
+      modeSelect.className = 'fop-hg-select';
+      [['generic', 'Generic Hired Gun'], ['premade', 'Premade']].forEach(([val, txt]) => {
+        const opt = document.createElement('option');
+        opt.value = val; opt.textContent = txt; opt.selected = hgMode === val;
+        modeSelect.appendChild(opt);
+      });
+      modeSelect.addEventListener('change', () => {
+        state.card._fop_hgMode = modeSelect.value;
+        if (modeSelect.value === 'premade') {
+          if (!state.card._fop_hgPremadeId && typeof HIRED_GUN_PREMADES !== 'undefined' && HIRED_GUN_PREMADES.length)
+            state.card._fop_hgPremadeId = HIRED_GUN_PREMADES[0].id;
+          applyFopHGPremade();
+        } else {
+          state.card._fop_hgPremadeId = null;
+          const hgUnit = OPFOR_UNITS.find(u => u.id === 'hired-gun');
+          if (hgUnit) state.card._fop_models = String(hgUnit.modelsDefault);
+          state.card._fop_upgrades = {};
+          applyFopCalc();
+        }
+        buildForm();
+      });
+      hgModeRow.appendChild(modeSelect);
+      if (hgMode === 'premade' && typeof HIRED_GUN_PREMADES !== 'undefined') {
+        const premadeSelect = document.createElement('select');
+        premadeSelect.className = 'fop-hg-select';
+        HIRED_GUN_PREMADES.forEach(p => {
+          const opt = document.createElement('option');
+          opt.value = p.id;
+          opt.textContent = p.name + ' (' + p.fopPerModel + ' FOP)';
+          opt.selected = state.card._fop_hgPremadeId === p.id;
+          premadeSelect.appendChild(opt);
+        });
+        premadeSelect.addEventListener('change', () => {
+          state.card._fop_hgPremadeId = premadeSelect.value;
+          applyFopHGPremade();
+          buildForm();
+        });
+        hgModeRow.appendChild(premadeSelect);
+      }
+      box.appendChild(hgModeRow);
+      if (hgMode === 'premade') {
+        const premade = typeof HIRED_GUN_PREMADES !== 'undefined' &&
+          HIRED_GUN_PREMADES.find(p => p.id === (state.card._fop_hgPremadeId || (HIRED_GUN_PREMADES[0] && HIRED_GUN_PREMADES[0].id)));
+        if (premade) {
+          const fopRow = document.createElement('div');
+          fopRow.className = 'fop-row fop-total';
+          fopRow.innerHTML = `<strong>FOP: ${premade.fopPerModel}</strong> <span>(Individual — ${premade.name})</span>`;
+          box.appendChild(fopRow);
+        }
+        return;
+      }
+    }
 
     /* --- Models count --- */
     const modRow = document.createElement('div');
@@ -407,6 +470,26 @@ function applyFopCalc() {
    Breacher / Reference: grouped <select> dropdowns.
    Weapon / Gear: type-ahead search + Browse button.
    ──────────────────────────────────────────────────────────*/
+function applyFopHGPremade() {
+  const premadeId = state.card._fop_hgPremadeId;
+  if (!premadeId || typeof HIRED_GUN_PREMADES === 'undefined') return;
+  const p = HIRED_GUN_PREMADES.find(hg => hg.id === premadeId);
+  if (!p) return;
+
+  state.card.badge     = String(p.fopPerModel);
+  state.card.name      = p.name;
+  state.card.formation = p.formation;
+  state.card.rc        = p.stats.rc;
+  state.card.mc        = p.stats.mc;
+  state.card.arm       = p.stats.arm;
+  state.card.mov       = p.stats.mov;
+  state.card.wnd       = p.stats.wnd;
+  state.card.tech      = p.stats.tech;
+  state.card.rules     = [p.fopPerModel + ' FOP Per Model', ...p.rules];
+  if (p.bands) state.card.bands = p.bands.map(b => ({ ...b }));
+  touch();
+}
+
 function buildLibraryField() {
   const lib = getLibrary(state.template);
   if (!lib) return null;
