@@ -626,14 +626,14 @@ function renderWeaponCard(ctx, card, img) {
     ctx.strokeStyle = '#1a1a1a'; ctx.lineWidth = 2; ctx.stroke();
     ctx.fillStyle = '#ffffff';
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText(card.damage, px + dw / 2, sy + 19);
+    ctx.fillText(card.damage, px + dw / 2, sy + 18);
     if (ce) {
       px += dw + gap;
       ctx.fillStyle = PALETTE.boneLight;
       roundRectPath(ctx, px, sy, cw, 36, 7); ctx.fill();
       ctx.strokeStyle = '#5c4a1c'; ctx.lineWidth = 2; ctx.stroke();
       ctx.fillStyle = '#4a3a10';
-      ctx.fillText(ce, px + cw / 2, sy + 19);
+      ctx.fillText(ce, px + cw / 2, sy + 18);
     }
   }
 
@@ -663,18 +663,30 @@ function renderWeaponCard(ctx, card, img) {
   ctx.strokeStyle = 'rgba(0,0,0,0.35)'; ctx.lineWidth = 1.5;
   ctx.strokeRect(inX + 0.75, ry + 0.75, inW - 1.5, H - F - ry - 1.5);
 
-  let fy = ry + 10;
   const fw = inW - M.PAD * 2;
-  if (String(card.wtype || '').trim()) {
+  const hasWtype = String(card.wtype || '').trim();
+  const boxH = H - F - ry;
+
+  if (hasWtype && !wRules.length) {
+    /* Only wtype — vertically centre it in the white box */
     fitLine(ctx, card.wtype, fw, 400, LAYOUT.FS_MINI_BODY, 15, FONTS.body);
     ctx.fillStyle = '#15181c';
-    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
-    ctx.fillText(card.wtype, inX + M.PAD, fy);
-    fy += 30;
-  }
-  if (wRules.length) {
-    drawBullets(ctx, wRules, inX + M.PAD, fy, fw, H - F - fy - 8, '#15181c',
-                LAYOUT.FS_MINI_BODY, LAYOUT.FS_MINI_MIN);
+    ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+    ctx.fillText(card.wtype, inX + M.PAD, ry + boxH / 2);
+  } else {
+    /* wtype + rules, or rules only — stack from top */
+    let fy = ry + 10;
+    if (hasWtype) {
+      fitLine(ctx, card.wtype, fw, 400, LAYOUT.FS_MINI_BODY, 15, FONTS.body);
+      ctx.fillStyle = '#15181c';
+      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.fillText(card.wtype, inX + M.PAD, fy);
+      fy += 30;
+    }
+    if (wRules.length) {
+      drawBullets(ctx, wRules, inX + M.PAD, fy, fw, H - F - fy - 8, '#15181c',
+                  LAYOUT.FS_MINI_BODY, LAYOUT.FS_MINI_MIN);
+    }
   }
 
   drawFrame(ctx, W, H, M.FRAME, M.RADIUS);
