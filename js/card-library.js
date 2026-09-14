@@ -214,6 +214,63 @@ function buildBreacherLibrary() {
   return out;
 }
 
+/* Build the Hired Gun library: one generic entry + premade named characters. */
+function buildHiredGunLibrary() {
+  const out = [];
+
+  /* Generic Hired Gun — base loadout, all upgrades listed as rules */
+  out.push({
+    id:       'hg:generic',
+    group:    'Generic',
+    label:    'Hired Gun',
+    sublabel: '6 FOP',
+    search:   'hired gun generic',
+    fields: {
+      name:      'HIRED GUN',
+      badge:     '6',
+      rc:        '12', mc: '12', arm: '1', mov: '5"', wnd: '12', tech: '12',
+      bands: [
+        { text:'PRIMARY WEAPON (or Support)', span:'full', tone:'dark' },
+        { text:'SECONDARY WEAPON',            span:'half', tone:'dark' },
+        { text:'MELEE WEAPON',                span:'half', tone:'dark' },
+        { text:'MELEE WEAPON 2',              span:'half', tone:'dark' },
+      ],
+      formation: 'Individual',
+      rules: [
+        '6 FOP. Max 1 per Breacher in the Operation.',
+        'Always Individual.',
+        'Upgrade: +1 Armor (→3) +2 FOP.',
+        'Upgrade: Concealed +2 FOP.',
+        'Upgrade: Coordinated +1 FOP/model [2/4] 2" cohesion.',
+      ],
+      footer: '',
+    },
+  });
+
+  /* Premade named Hired Guns */
+  HIRED_GUN_PREMADES.forEach(p => {
+    out.push({
+      id:       'hg:' + p.id,
+      group:    'Premade',
+      label:    p.name,
+      sublabel: p.fopPerModel + ' FOP',
+      search:   p.name.toLowerCase() + ' hired gun premade',
+      fields: {
+        name:      p.name,
+        badge:     String(p.fopPerModel),
+        rc:        p.stats.rc, mc: p.stats.mc, arm: p.stats.arm,
+        mov:       p.stats.mov, wnd: p.stats.wnd, tech: p.stats.tech,
+        bands:     p.bands.map(b => ({ ...b })),
+        formation: p.formation,
+        rules:     p.rules ? [...p.rules] : [],
+        footer:    p.footer || '',
+      },
+    });
+  });
+
+  return out;
+}
+
 /* Build the Reference card library from premade Breachers only.
    Selecting a character pre-fills name, subtitle and abilities. */
 function buildReferenceLibrary() {
@@ -235,11 +292,12 @@ function buildReferenceLibrary() {
 /* One registry keyed by template id; a template without an entry
    simply gets no library controls. */
 const LIBRARIES = {
-  weapon:    { title: 'Weapon Library',    build: buildWeaponLibrary,    cache: null },
-  gear:      { title: 'Gear Library',      build: buildGearLibrary,      cache: null },
-  opfor:     { title: 'OPFOR Library',     build: buildOpforLibrary,     cache: null },
-  breacher:  { title: 'Breacher Library',  build: buildBreacherLibrary,  cache: null },
-  reference: { title: 'Reference Library', build: buildReferenceLibrary, cache: null },
+  weapon:      { title: 'Weapon Library',    build: buildWeaponLibrary,    cache: null },
+  gear:        { title: 'Gear Library',      build: buildGearLibrary,      cache: null },
+  opfor:       { title: 'OPFOR Library',     build: buildOpforLibrary,     cache: null },
+  breacher:    { title: 'Breacher Library',  build: buildBreacherLibrary,  cache: null },
+  reference:   { title: 'Reference Library', build: buildReferenceLibrary, cache: null },
+  'hired-gun': { title: 'Hired Gun Library', build: buildHiredGunLibrary,  cache: null },
 };
 
 function getLibrary(templateId) {

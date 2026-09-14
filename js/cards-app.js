@@ -63,7 +63,7 @@ function buildForm() {
     if (picker) {
       const head = document.createElement('div');
       head.className = 'form-group-head';
-      head.textContent = 'Fill from library';
+      head.textContent = 'Library';
       form.append(head, picker);
     }
   }
@@ -404,14 +404,37 @@ function applyFopCalc() {
 }
 
 /* ── Library picker ─────────────────────────────────────────
-   Weapon and Gear cards can be filled from the rulebook data
-   instead of retyped. Two ways in, same code path: type-ahead in
-   the search box, or Browse for the full grouped list.
+   Breacher / Reference: grouped <select> dropdowns.
+   Weapon / Gear: type-ahead search + Browse button.
    ──────────────────────────────────────────────────────────*/
 function buildLibraryField() {
   const lib = getLibrary(state.template);
   if (!lib) return null;
 
+  /* ── Breacher: two dropdowns (Generic Classes | Premade Breachers) ── */
+  if (state.template === 'breacher') {
+    return buildLibraryDropdowns([
+      { label: 'Generic',  items: lib.filter(i => i.group === 'Generic Classes') },
+      { label: 'Premade',  items: lib.filter(i => i.group === 'Premade Breachers') },
+    ]);
+  }
+
+  /* ── Reference: one dropdown (Premade Breachers) ── */
+  if (state.template === 'reference') {
+    return buildLibraryDropdowns([
+      { label: 'Premade Breachers', items: lib },
+    ]);
+  }
+
+  /* ── Hired Gun: two dropdowns (Generic | Premade) ── */
+  if (state.template === 'hired-gun') {
+    return buildLibraryDropdowns([
+      { label: 'Generic',  items: lib.filter(i => i.group === 'Generic') },
+      { label: 'Premade',  items: lib.filter(i => i.group === 'Premade') },
+    ]);
+  }
+
+  /* ── Weapon / Gear: type-ahead search + Browse button ── */
   const box = document.createElement('div');
   box.className = 'library-field';
 
@@ -498,6 +521,56 @@ function buildLibraryField() {
 
   box.append(row, menu);
   return box;
+}
+
+/* Build a row of <select> dropdowns, one per group. Each selection
+   immediately calls applyLibraryItem(), which rebuilds the whole form
+   so there is no stale selected value to reset. */
+function buildLibraryDropdowns(groups) {
+  const wrap = document.createElement('div');
+  wrap.className = 'library-dropdowns';
+
+  const row = document.createElement('div');
+  row.className = 'library-dropdown-row';
+  row.style.gridTemplateColumns = groups.map(() => '1fr').join(' ');
+
+  groups.forEach(({ label, items }) => {
+    const col = document.createElement('div');
+    col.className = 'library-dropdown-col';
+
+    const lbl = document.createElement('label');
+    lbl.className = 'library-dropdown-label';
+    lbl.textContent = label;
+
+    const sel = document.createElement('select');
+    sel.className = 'library-select';
+
+    const ph = document.createElement('option');
+    ph.value = '';
+    ph.textContent = '— Select —';
+    ph.disabled = true;
+    ph.selected = true;
+    sel.appendChild(ph);
+
+    items.forEach(item => {
+      const opt = document.createElement('option');
+      opt.value = item.label;
+      opt.textContent = item.label;
+      sel.appendChild(opt);
+    });
+
+    sel.addEventListener('change', () => {
+      const found = items.find(i => i.label === sel.value);
+      if (found) applyLibraryItem(found);
+      // applyLibraryItem → buildForm() recreates this select, so no reset needed
+    });
+
+    col.append(lbl, sel);
+    row.appendChild(col);
+  });
+
+  wrap.appendChild(row);
+  return wrap;
 }
 
 /* Copy a library entry's fields onto the working card and rebuild

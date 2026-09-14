@@ -430,3 +430,67 @@ const BREACHER_PREMADES = [
     ],
   },
 ];
+
+/* ============================================================
+   HIRED_GUN_PREMADES — named Hired Guns for the card designer.
+   Stats use lowercase keys (same convention as OPFOR_UNITS /
+   BREACHER_CLASSES). Loadout bands list the default weapons.
+   ============================================================ */
+const HIRED_GUN_PREMADES = [
+  {
+    id: 'anita',
+    name: 'ANITA',
+    fopPerModel: 6,
+    stats: { rc:'12', mc:'12', tech:'12', wnd:'11', arm:'1', mov:'5"' },
+    concealed: false,
+    bands: [
+      { text:'Assault Rifle (Med)',    span:'full', tone:'dark' },
+      { text:'Semi-Auto Pistol',       span:'half', tone:'dark' },
+      { text:'Blunt Style',            span:'half', tone:'dark' },
+      { text:'Cutting Style',          span:'half', tone:'dark' },
+    ],
+    formation: 'Individual',
+    rules: [
+      'When a Unit in the same OPFOR would become Shaken, roll D6 — 4+ negates.',
+      'While Anita is on the table: when OPFOR wins Initiative, gain +1 Momentum.',
+    ],
+    footer: '',
+  },
+  {
+    id: 'cyclone',
+    name: 'CYCLONE',
+    fopPerModel: 10,
+    stats: { rc:'12', mc:'12', tech:'12', wnd:'10', arm:'3', mov:'5"' },
+    concealed: true,
+    bands: [
+      { text:'Compact SMG (Light)',    span:'full', tone:'dark' },
+      { text:'Revolver',               span:'half', tone:'dark' },
+      { text:'Chopper Style',          span:'half', tone:'dark' },
+      { text:'Fists and Kicks',        span:'half', tone:'dark' },
+    ],
+    formation: 'Individual · Concealed',
+    rules: [
+      'Street Thugs in the same OPFOR have 4" cohesion.',
+      'Counts as having Akimbo Tactical Gear.',
+    ],
+    footer: '',
+  },
+  {
+    id: 'turbo',
+    name: 'TURBO',
+    fopPerModel: 10,
+    stats: { rc:'12', mc:'12', tech:'12', wnd:'10', arm:'3', mov:'5"' },
+    concealed: true,
+    bands: [
+      { text:'Semi-Auto Sniper (Med)', span:'full', tone:'dark' },
+      { text:'Revolver',               span:'half', tone:'dark' },
+      { text:'Blunt Style',            span:'half', tone:'dark' },
+      { text:'Stiletto Style',         span:'half', tone:'dark' },
+    ],
+    formation: 'Individual · Concealed',
+    rules: [
+      'Trained Units in the same OPFOR gain +1 Ranged Combat.',
+    ],
+    footer: '',
+  },
+];

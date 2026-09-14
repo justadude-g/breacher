@@ -453,10 +453,13 @@ function renderUnitCard(ctx, card, img, tpl) {
   const artH = avail - rulesH;
 
   const artY = headBottom;
-  const wellTop = tpl.id === 'opfor' ? PALETTE.opforArt  : '#8f8c85';
-  const wellBot = tpl.id === 'opfor' ? PALETTE.opforArtB : '#4a4843';
-  drawArtWell(ctx, inX, artY, inW, artH, wellTop, wellBot,
-              tpl.id === 'opfor' ? 'ADD UNIT ART' : 'ADD PORTRAIT', !!img);
+  const wellTop = tpl.id === 'opfor'      ? PALETTE.opforArt   :
+                  tpl.id === 'hired-gun'  ? PALETTE.navy       : '#8f8c85';
+  const wellBot = tpl.id === 'opfor'      ? PALETTE.opforArtB  :
+                  tpl.id === 'hired-gun'  ? PALETTE.navyLight  : '#4a4843';
+  const wellPlaceholder = tpl.id === 'opfor' ? 'ADD UNIT ART' :
+                          tpl.id === 'hired-gun' ? 'ADD HIRED GUN ART' : 'ADD PORTRAIT';
+  drawArtWell(ctx, inX, artY, inW, artH, wellTop, wellBot, wellPlaceholder, !!img);
   if (img) drawCover(ctx, img, inX, artY, inW, artH,
                      card.artX ?? 0.5, card.artY ?? 0.5, card.artZoom ?? 1);
 
@@ -793,11 +796,12 @@ function drawFrame(ctx, W, H, frame, radius) {
    ============================================================ */
 
 const RENDERERS = {
-  breacher:  (ctx, c, img) => renderUnitCard(ctx, c, img, TEMPLATES.breacher),
-  opfor:     (ctx, c, img) => renderUnitCard(ctx, c, img, TEMPLATES.opfor),
-  reference: (ctx, c) => renderReferenceCard(ctx, c),
-  weapon:    renderWeaponCard,
-  gear:      renderGearCard,
+  breacher:    (ctx, c, img) => renderUnitCard(ctx, c, img, TEMPLATES.breacher),
+  opfor:       (ctx, c, img) => renderUnitCard(ctx, c, img, TEMPLATES.opfor),
+  'hired-gun': (ctx, c, img) => renderUnitCard(ctx, c, img, TEMPLATES['hired-gun']),
+  reference:   (ctx, c) => renderReferenceCard(ctx, c),
+  weapon:      renderWeaponCard,
+  gear:        renderGearCard,
 };
 
 function renderCard(canvas, card, img, opts) {

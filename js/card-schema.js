@@ -235,6 +235,56 @@ const TEMPLATES = {
     },
   },
 
+  /* Hired Gun: named or generic NPC ally unit.
+     Same stat layout as OPFOR (3+3 stat tiles). Always Individual. */
+  'hired-gun': {
+    id: 'hired-gun',
+    size: 'poker',
+    label: 'Hired Gun',
+    blurb: 'Named or generic Hired Gun — always Individual, FOP cost, special rules.',
+    accent: PALETTE.redBright,
+    badgeLabel: 'FOP',
+    statsLeft: OPFOR_STATS_LEFT,
+    statsRight: OPFOR_STATS_RIGHT,
+    fields: [
+      { key:'name',      type:'text',    label:'Name',             placeholder:'HIRED GUN', maxlength:34 },
+      { key:'badge',     type:'text',    label:'FOP Cost',         placeholder:'6',         maxlength:6,  width:'third' },
+      { key:'art',       type:'image',   label:'Character Art' },
+      { group:'Stats' },
+      { key:'rc',    type:'stat', label:'Ranged Combat', placeholder:'12', width:'third' },
+      { key:'mc',    type:'stat', label:'Melee Combat',  placeholder:'12', width:'third' },
+      { key:'arm',   type:'stat', label:'Armour',        placeholder:'1',  width:'third' },
+      { key:'mov',   type:'stat', label:'Movement',      placeholder:'5"', width:'third' },
+      { key:'wnd',   type:'stat', label:'Wounds',        placeholder:'12', width:'third' },
+      { key:'tech',  type:'stat', label:'Technical',     placeholder:'12', width:'third' },
+      { group:'Loadout' },
+      { key:'bands',     type:'bands',   label:'Loadout Bands' },
+      { group:'Rules' },
+      { key:'formation', type:'text',    label:'Formation / Concealed', placeholder:'Individual', maxlength:40 },
+      { key:'rules',     type:'bullets', label:'Special Rules',  placeholder:'One rule per line' },
+      { key:'footer',    type:'text',    label:'Footer Note (optional)', placeholder:'', maxlength:60 },
+    ],
+    defaults: {
+      name:'HIRED GUN', badge:'6',
+      rc:'12', mc:'12', arm:'1', mov:'5"', wnd:'12', tech:'12',
+      bands:[
+        { text:'PRIMARY WEAPON (or Support)', span:'full', tone:'dark' },
+        { text:'SECONDARY WEAPON',            span:'half', tone:'dark' },
+        { text:'MELEE WEAPON',                span:'half', tone:'dark' },
+        { text:'MELEE WEAPON 2',              span:'half', tone:'dark' },
+      ],
+      formation:'Individual',
+      rules:[
+        '6 FOP. Max 1 per Breacher in the Operation.',
+        'Always Individual.',
+        'Upgrade: +1 Armor (→3) +2 FOP.',
+        'Upgrade: Concealed +2 FOP.',
+        'Upgrade: Coordinated +1 FOP/model [2/4] 2" cohesion.',
+      ],
+      footer:'',
+    },
+  },
+
   /* Companion card for a premade Breacher: name plus the full
      special-ability text, at a size you can actually read across
      the table. Pairs with a `breacher` card of the same name. */
@@ -266,4 +316,4 @@ const TEMPLATES = {
 
 };
 
-const TEMPLATE_ORDER = ['breacher','reference','opfor','weapon','gear'];
+const TEMPLATE_ORDER = ['breacher','reference','opfor','hired-gun','weapon','gear'];
