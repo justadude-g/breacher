@@ -1653,6 +1653,7 @@
   <div class="tab-nav">
     <button class="tab-btn active" data-tab="breacher">⚡ Breacher</button>
     <button class="tab-btn" data-tab="opfor">☠ OPFOR</button>
+    <a class="tab-btn" href="cards.html" style="text-decoration:none;display:inline-flex;align-items:center;">🃏 Cards</a>
   </div>
   <div class="fop-counter" id="opfor-header-controls" style="display:none;">
     <div class="fop-budget-wrap">
@@ -1783,56 +1784,14 @@
   </div>
 </div>
 
+<script src="js/game-data.js"></script>
 <script>
 // ============================================================
 // DATA
 // ============================================================
 
-const WEAPONS = {
-  // Primary — Long Range
-  'Bolt Action Sniper (Hvy)':   { type:'primary', damage:'1D10 [DEV][T][SH+2]', modes:'[PS]',           short:'1-12" -2',  medium:'12-24" +0', long:'24+" +2',    category:'Long',      ce:1 },
-  'Semi-Auto Sniper (Med)':     { type:'primary', damage:'1D8 [DEV][T][SH+1]',  modes:'[SA2]',          short:'1-12" -1',  medium:'12-24" +1', long:'24+" +1',    category:'Long',      ce:1 },
-  'DMR (Med)':                  { type:'primary', damage:'1D8 [T][SH+1]',        modes:'[PS][SA2][B]',   short:'1-12" -2',  medium:'12-24" +2', long:'24+" -2',    category:'Long',      ce:0 },
-  // Primary — Medium Range
-  'Assault Rifle (Med)':        { type:'primary', damage:'1D6+1',                modes:'[SA3][A][PS]',   short:'1-12" +1',  medium:'12-24" +0', long:'24-30" -1',  category:'Med',       ce:0 },
-  'Assault Rifle (Hvy)':        { type:'primary', damage:'1D8+1',                modes:'[SA2][A][PS]',   short:'1-12" +0',  medium:'12-24" +1', long:'24-30" -1',  category:'Med',       ce:0 },
-  // Primary — Short/Medium Range
-  'SMG (Light)':                { type:'primary', damage:'1D6',                  modes:'[SA2][B][A]',    short:'1-8" +2',   medium:'8-18" -1',  long:'18-22" -2',  category:'Short/Med', ce:0 },
-  'SMG (Medium)':               { type:'primary', damage:'1D6+1',                modes:'[PS][B][A]',     short:'1-8" +1',   medium:'8-20" +0',  long:'20-25" -2',  category:'Short/Med', ce:0 },
-  // Primary — Short Range
-  'PDW (Light)':                { type:'primary', damage:'1D6 [AP Short]',       modes:'[B][A]',         short:'1-6" +2',   medium:'6-15" +1',  long:'15-20" -3',  category:'Short',     ce:0 },
-  'Compact SMG (Light)':        { type:'primary', damage:'1D6',                  modes:'[Ax2]',          short:'1-6" +3',   medium:'6-15" -3',  long:'16-20" -4',  category:'Short',     ce:1 },
-  'Automatic Pistol (Light)':   { type:'primary', damage:'1D6',                  modes:'[SA2][A]',       short:'1-4" +2',   medium:'4-10" -3',  long:'10-15" -4',  category:'Short',     ce:1 },
-  'Heavy Pistol (Hvy)':         { type:'primary', damage:'1D6+1 [Dev][SH]',      modes:'[SA1]',          short:'1-4" +2',   medium:'4-12" +0',  long:'12-15" -1',  category:'Short',     ce:0 },
-  'Shotgun (Buckshot)':         { type:'primary', damage:'3D3',                  modes:'[PS]/[SA2]',     short:'1-6" +3',   medium:'6-15" -1',  long:'15-20" -3',  category:'Short',     ce:0 },
-  'Shotgun (Slug)':             { type:'primary', damage:'1D8 [DEV]',            modes:'[PS]/[SA2]',     short:'1-8" +1',   medium:'8-15" +0',  long:'15-20" -2',  category:'Short',     ce:0 },
-  'Shotgun (Flechette)':        { type:'primary', damage:'1D6 [AP][T]',          modes:'[PS]/[SA2]',     short:'1-6" +3',   medium:'6-15" -2',  long:'15-20" -5',  category:'Short',     ce:0 },
-  'Sawed-Off (Buckshot)':       { type:'primary', damage:'3D3 +Low Ammo',        modes:'[PS]/[SA2]',     short:'1-6" +4',   medium:'6-15" -4',  long:'—',          category:'Short',     ce:0 },
-  // Support
-  'LMG (Med)':                  { type:'support', damage:'1D6+2 [SH+1]',         modes:'[A]',            short:'1-12" -1',  medium:'12-24" +0', long:'24-40" -2',  special:'Prone/Bracing: all bands +1',          ce:0 },
-  'LMG PARA':                   { type:'support', damage:'1D6+2 [SH+1]',         modes:'[B][A]',         short:'1-12" +0',  medium:'12-24" -1', long:'24-40" -2',  special:'Prone/Bracing: first 2 bands +1',      ce:0 },
-  'Anti-Material Rifle':        { type:'support', damage:'2D10 [AP][T][SH+4]',   modes:'[PS]',           short:'1-6" -1',   medium:'6-30" +0',  long:'30+" -1',    special:'Must be Prone/Bracing. -1" Move.',     ce:1 },
-  'Carbine w/ Underslung GL':   { type:'support', damage:'1D6+1',                modes:'[PS][A]',        short:'1-12" +1',  medium:'12-20" +0', long:'20-25" +0',  special:'Combined weapon',                      ce:1 },
-  'Grenade Launcher':           { type:'support', damage:'Per grenade',           modes:'[PS]',           short:'1-6" +0',   medium:'6-15" -1',  long:'—',          special:'2 shots; Phosphorus = 2 shots',        ce:0 },
-  // Secondary
-  'Revolver':                   { type:'secondary', damage:'1D6',                modes:'[PS]',           short:'1-4" +2',   medium:'4-10" +0',  long:'—',          special:'No Low Ammo/Ammo Out tokens',          ce:0 },
-  'Semi-Auto Pistol':           { type:'secondary', damage:'1D6',                modes:'[SA2]',          short:'1-4" +1',   medium:'4-10" -1',  long:'—',          special:'No Low Ammo/Ammo Out tokens',          ce:0 },
-  // Melee
-  'Stiletto Style':             { type:'melee', damage:'1D4+1 [AP]',             modes:'Rapid Strikes',                  short:'0-1"', medium:'—', long:'—' },
-  'Chopper Style':              { type:'melee', damage:'1D8 (-1 MC)[T]',         modes:'Rapid Strikes + Heavy Blow',     short:'0-1"', medium:'—', long:'—' },
-  'Cutting Style':              { type:'melee', damage:'1D6+1',                  modes:'Rapid Strikes + Heavy Blow',     short:'0-1"', medium:'—', long:'—' },
-  'Blunt Style':                { type:'melee', damage:'1D8+1 [T]',              modes:'Heavy Blow',                     short:'0-1"', medium:'—', long:'—' },
-  'Fists and Kicks':            { type:'melee', damage:'1D4',                    modes:'Rapid Strikes + Heavy Blow',     short:'0-1"', medium:'—', long:'—' },
-};
-
-const GRENADES = [
-  { id:'smoke',     name:'Defensive Smoke',     slots:1, range:'½ Tech +2"', blast:'BL4"', damage:'—',           duration:'3 Turns',  effect:'Blocks LoS in/out. 4" high cylinder.' },
-  { id:'explosive', name:'Offensive Explosive', slots:1, range:'½ Tech +2"', blast:'BL3"', damage:'3D3',          duration:'Instant',  effect:'Units hit are automatically Shaken.' },
-  { id:'phosphorus',name:'Offensive Phosphorus',slots:2, range:'½ Tech +2"', blast:'BL4"', damage:'1D6 [DEV][AP]',duration:'2 Turns',  effect:'Automatically Shaken. 4" high cylinder cloud.' },
-  { id:'flashbang', name:'Defensive Flashbang', slots:1, range:'Tech +2"',   blast:'BL3"', damage:'1',            duration:'Instant',  effect:'-5 Combat/Technical, -3" Movement until end of next turn. Civilians cannot be taken OOA.' },
-  { id:'stun',      name:'Defensive Stun',      slots:1, range:'½ Tech +2"', blast:'BL3"', damage:'1',            duration:'Instant',  effect:'Hit units cannot activate next Contact! card draw. Civilians cannot be taken OOA.' },
-];
-
+// Weapons and grenade data now live in js/game-data.js,
+// loaded before this script so the card designer can share it.
 const UNITS = [
   {
     id: 'street-thug',
