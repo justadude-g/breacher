@@ -440,8 +440,15 @@ function renderUnitCard(ctx, card, img, tpl) {
 
   const headBottom = F + LAYOUT.HEADER_H;
   const avail = H - F - headBottom - bandsH;
+
+  /* Art must be tall enough to fully contain the stat columns on each
+     side. Breacher has 5 rows (420 px) but OPFOR only has 3 (252 px),
+     so calculate per-template rather than using the global ART_MIN_H. */
+  const statRows = Math.max(tpl.statsLeft.length, tpl.statsRight.length);
+  const artMinH  = statRows * LAYOUT.TILE_H + 20;   // +20 px breathing room
+
   let rulesH = Math.max(rulesNeed, LAYOUT.RULES_MIN_H);
-  rulesH = Math.min(rulesH, avail - LAYOUT.ART_MIN_H);
+  rulesH = Math.min(rulesH, avail - artMinH);
   rulesH = Math.max(rulesH, Math.min(LAYOUT.RULES_MIN_H, avail * 0.3));
   const artH = avail - rulesH;
 
