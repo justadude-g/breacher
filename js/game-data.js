@@ -213,9 +213,9 @@ const BREACHER_CLASSES = [
       { text:'MELEE WEAPON', span:'half', tone:'dark' },
     ],
     rules: [
-      'Once per turn, a (SAx) gets +1 shot max.',
-      'If Stacked Mag kills a Unit, gain +2 MP.',
-      'No Low Ammo from Stacked Mags.',
+      '(SAx) Ranged Combat Maneuvers: max +1 extra shot.',
+      'Stacked Mag OoA: gain +2 MP.',
+      'Stacked Mags never grant a Low Ammo token.',
     ],
     footer: '',
   },
@@ -230,7 +230,10 @@ const BREACHER_CLASSES = [
       { text:'SECONDARY WEAPON', span:'half', tone:'dark' },
       { text:'MELEE WEAPON', span:'half', tone:'dark' },
     ],
-    rules: [],
+    rules: [
+      '1 free Aim Maneuver per turn as part of a Movement Maneuver.',
+      'Full-health OoA: gain 1 Momentum.',
+    ],
     footer: '',
   },
   {
@@ -244,7 +247,10 @@ const BREACHER_CLASSES = [
       { text:'SECONDARY WEAPON', span:'half', tone:'dark' },
       { text:'MELEE WEAPON', span:'half', tone:'dark' },
     ],
-    rules: [],
+    rules: [
+      'Reduce Low Ammo tokens received by 1 (min. 1).',
+      'Full Auto OoA: gain 1 Momentum.',
+    ],
     footer: '',
   },
   {
@@ -259,8 +265,8 @@ const BREACHER_CLASSES = [
       { text:'MELEE WEAPON', span:'half', tone:'dark' },
     ],
     rules: [
-      'May begin the Operation in Concealment.',
-      'Concealment tokens may move up to 5".',
+      'May begin the Operation Concealed; tokens move up to 5\".',
+      'Concealment OoA: gain 1 Momentum.',
     ],
     footer: '',
   },
@@ -275,7 +281,10 @@ const BREACHER_CLASSES = [
       { text:'SECONDARY WEAPON', span:'half', tone:'dark' },
       { text:'MELEE WEAPON', span:'half', tone:'dark' },
     ],
-    rules: [],
+    rules: [
+      '1 free Heavy Blow Maneuver per turn as part of another Combat Maneuver.',
+      'Heavy Blow OoA: gain 1 Momentum.',
+    ],
     footer: '',
   },
 ];

@@ -128,9 +128,9 @@ const TEMPLATES = {
         { text:'MELEE WEAPON',     span:'half', tone:'dark' },
       ],
       rules:[
-        'Once per turn, a (SAx) gets +1 shot max.',
-        'If Stacked Mag kills a Unit, gain +2 MP.',
-        'No Low Ammo from Stacked Mags.',
+        '(SAx) Ranged Combat Maneuvers: max +1 extra shot.',
+        'Stacked Mag OoA: gain +2 MP.',
+        'Stacked Mags never grant a Low Ammo token.',
       ],
       footer:'',
     },
