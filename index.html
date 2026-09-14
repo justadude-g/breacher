@@ -421,7 +421,16 @@
   .roster-entry.type-militia { border-left-color: var(--amber); }
   .roster-entry.type-trained { border-left-color: var(--accent); }
   .roster-entry.type-hired-gun { border-left-color: var(--red-bright); }
-  .roster-entry.type-named-hg { border-left-color: #c471ed; }
+  .roster-entry.type-named-hg  { border-left-color: #c471ed; }
+
+  .hg-mode-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .hg-premade-select { flex: 1 1 140px; }
 
   .entry-header {
     display: flex;
@@ -1743,7 +1752,6 @@
         <button class="filter-tab" data-filter="militia">Militia</button>
         <button class="filter-tab" data-filter="trained">Trained</button>
         <button class="filter-tab" data-filter="hired-gun">Hired Gun</button>
-        <button class="filter-tab" data-filter="named-hg">Named HG</button>
       </div>
     </div>
     <div class="unit-list" id="unit-library"></div>
@@ -1973,7 +1981,7 @@ let budget = 20;
 // ============================================================
 function renderLibrary() {
   const container = document.getElementById('unit-library');
-  const allUnits = [...UNITS, ...PREMADE_HG];
+  const allUnits = [...UNITS];
   const filtered = activeFilter === 'all' ? allUnits : allUnits.filter(u => u.type === activeFilter);
 
   container.innerHTML = '';
@@ -2058,6 +2066,8 @@ function addUnit(unitId) {
     activeUpgrades: {},
     equipMode: 'all',      // 'all' or 'individual'
     modelWeapons: [],      // array of per-model weapon objects when equipMode === 'individual'
+    hgMode: template.type === 'hired-gun' ? 'generic' : (template.type === 'named-hg' ? 'premade' : null),
+    hgPremadeId: template.type === 'named-hg' ? template.id : null,
   };
 
   roster.push(entry);
@@ -2099,6 +2109,50 @@ function updateModelWeapon(uid, modelIdx, slot, value) {
   if (!entry || !entry.modelWeapons[modelIdx]) return;
   entry.modelWeapons[modelIdx][slot] = value || null;
   renderRoster();
+}
+
+// ============================================================
+// HIRED GUN MODE (Generic vs Premade)
+// ============================================================
+function switchHGMode(uid, mode) {
+  const entry = roster.find(e => e.uid === uid);
+  if (!entry) return;
+  entry.hgMode = mode;
+  if (mode === 'generic') {
+    const genericTpl = UNITS.find(u => u.id === 'hired-gun');
+    entry.template   = genericTpl;
+    entry.templateId = 'hired-gun';
+    entry.hgPremadeId = null;
+    entry.activeUpgrades = {};
+    entry.selectedPrimary   = genericTpl.defaultWeapons?.primary   ?? null;
+    entry.selectedSecondary = genericTpl.defaultWeapons?.secondary ?? null;
+    entry.selectedMelee     = genericTpl.defaultWeapons?.melee     ?? genericTpl.availableWeapons.melee?.[0] ?? null;
+    entry.selectedMelee2    = 'Fists and Kicks';
+    entry.selectedSupport   = null;
+    renderRoster();
+    updateFOP();
+  } else {
+    switchHGPremade(uid, PREMADE_HG[0].id); // defaults to first premade (Anita)
+  }
+}
+
+function switchHGPremade(uid, premadeId) {
+  const entry = roster.find(e => e.uid === uid);
+  if (!entry) return;
+  const premade = PREMADE_HG.find(p => p.id === premadeId);
+  if (!premade) return;
+  entry.hgMode      = 'premade';
+  entry.hgPremadeId = premadeId;
+  entry.template    = premade;
+  entry.templateId  = premadeId;
+  entry.activeUpgrades = {};
+  entry.selectedPrimary   = premade.defaultWeapons?.primary   ?? null;
+  entry.selectedSecondary = premade.defaultWeapons?.secondary ?? null;
+  entry.selectedMelee     = premade.defaultWeapons?.melee     ?? premade.availableWeapons.melee?.[0] ?? null;
+  entry.selectedMelee2    = premade.defaultWeapons?.melee2    ?? 'Fists and Kicks';
+  entry.selectedSupport   = null;
+  renderRoster();
+  updateFOP();
 }
 
 function renderEquipAll(entry, uid, t, primaryOpts, meleeOpts, secondaryOpts, supportOpts, isCoord) {
@@ -2326,10 +2380,10 @@ function renderRoster() {
     let el = container.querySelector(`.roster-entry[data-uid="${uid}"]`);
     if (!el) {
       el = document.createElement('div');
-      el.className = `roster-entry type-${t.type}`;
       el.dataset.uid = uid;
       container.appendChild(el);
     }
+    el.className = `roster-entry type-${t.type}`;
 
     // Build stats HTML
     const statsHtml = `
@@ -2402,7 +2456,27 @@ function renderRoster() {
       </div>`;
     }
 
-    let weaponHtml = equipModeHtml;
+    // Hired Gun mode selector (Generic vs Premade)
+    let hgModeHtml = '';
+    const isHGEntry = t.type === 'hired-gun' || t.type === 'named-hg';
+    if (isHGEntry) {
+      const hgMode = entry.hgMode || (t.type === 'named-hg' ? 'premade' : 'generic');
+      const premadeOpts = PREMADE_HG.map(p =>
+        `<option value="${p.id}" ${entry.hgPremadeId === p.id ? 'selected' : ''}>${p.name} (${p.fopPerModel} FOP)</option>`
+      ).join('');
+      const premadeSelect = hgMode === 'premade'
+        ? `<select class="config-select hg-premade-select" onchange="switchHGPremade(${uid},this.value)">${premadeOpts}</select>`
+        : '';
+      hgModeHtml = `<div class="hg-mode-row">
+        <select class="config-select" style="flex:0 0 auto;width:auto;" onchange="switchHGMode(${uid},this.value)">
+          <option value="generic" ${hgMode === 'generic' ? 'selected' : ''}>Generic Hired Gun</option>
+          <option value="premade" ${hgMode === 'premade' ? 'selected' : ''}>Premade</option>
+        </select>
+        ${premadeSelect}
+      </div>`;
+    }
+
+    let weaponHtml = hgModeHtml + equipModeHtml;
 
     if (!canEquipIndividual || entry.equipMode !== 'individual') {
       // Equip All mode (default)
